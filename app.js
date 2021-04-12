@@ -6,7 +6,7 @@ const dotenv = require('dotenv')
 const cors = require('cors')
 
 //routes
-const user = require('./routes/authRoutes')
+const user = require('./routes/userRoutes')
 
 dotenv.config();
 
@@ -29,9 +29,7 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({
     extended: true
 }))
-app.use(bodyParser.json())
 
-//routes
 user(app)
 
 app.listen(8080, () => {

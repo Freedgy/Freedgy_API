@@ -1,4 +1,4 @@
-const controllers = require('../controllers/authController')
+const controllers = require('../controllers/userController')
 
 module.exports = function (app) {
     app.route('/users/login')
