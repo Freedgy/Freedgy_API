@@ -1,4 +1,6 @@
 const mongoose = require('mongoose')
+const CryptoJS = require("crypto-js")
+const jwt = require('jsonwebtoken');
 
 const userSchema = new mongoose.Schema({
     name: {
@@ -26,4 +28,17 @@ const userSchema = new mongoose.Schema({
     timestamps: true
 });
 
-module.exports = mongoose.model('User', userSchema);
+userSchema.methods.Encrypt = function (password) {
+    this.password = CryptoJS.AES.encrypt(password, process.env.KEY_ENCRYPTION).toString();
+}
+
+userSchema.methods.isPasswordMatching = function (password) {
+    var bytes  = CryptoJS.AES.decrypt(this.password, process.env.KEY_ENCRYPTION);
+    return bytes.toString(CryptoJS.enc.Utf8) === password
+}
+
+userSchema.methods.generateAccessToken = function () {
+    return jwt.sign({email: this.email}, process.env.KEY_JWT);
+}
+
+module.exports = mongoose.model('User', userSchema); // User > users
