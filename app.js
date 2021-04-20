@@ -6,7 +6,7 @@ const dotenv = require('dotenv')
 const cors = require('cors')
 
 //routes
-const user = require('./routes/userRoutes')
+const user = require('./routes/userRoute')
 
 dotenv.config();
 
