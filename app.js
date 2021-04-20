@@ -10,17 +10,15 @@ const cors = require('cors')
 const user = require('./routes/userRoute')
 
 mongoose.connect(process.env.URL_DB, { useNewUrlParser: true, useUnifiedTopology: true }, () => {
-    console.log("Connected to the DB")
+    console.log("Connected to MongoDB")
 })
-
 
 app.use(cors())
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 
-
 user(app)
 
-app.listen(8080, () => {console.log('Listening on port: ${port}')})
+app.listen(port, () => {console.log('Listening on port: ' + port)})
 
-module.exports = app
+// module.exports = app

@@ -6,4 +6,3 @@ module.exports = function (app) {
     app.route('/users/register')
         .post(controllers.registerUser)
 }
-
