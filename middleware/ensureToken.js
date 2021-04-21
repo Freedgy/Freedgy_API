@@ -12,9 +12,3 @@ module.exports.ensureToken = function(req, res, next) {
         return res.status(403).send(error)
     }
 }
-
-    // jwt.verify(bearerHeader.split(" ")[1], process.env.KEY_JWT, (err, res_jwt) => {
-    //     if (err) 
-    //         return res.status(403).send(err);
-    //     next();
-    // });
