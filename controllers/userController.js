@@ -29,7 +29,7 @@ exports.loginUser = async function (req, res) {
         return res.status(400).send({ message: "Wrong email" })
     if (!user.isPasswordMatching(req.body.password))
         return res.status(400).send({ message: "Wrong password" })
-    return res.status(200).send({message: "Successfully logged", accessToken: user.generateAccessToken() })
+    return res.status(200).send({ message: "Successfully logged", accessToken: user.generateAccessToken() })
 }
 
 

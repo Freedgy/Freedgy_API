@@ -1,8 +1,10 @@
 const controllers = require('../controllers/userController')
 
 module.exports = function (app) {
-    app.route('/users/login')
+    app.route('/user/login')
         .post(controllers.loginUser)
-    app.route('/users/register')
+    app.route('/user/register')
+        .post(controllers.registerUser)
+    app.route('/user/information')
         .post(controllers.registerUser)
 }
