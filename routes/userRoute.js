@@ -8,4 +8,4 @@ module.exports = function (app) {
         .post(controllers.registerUser)
     app.route('/user/:id')
         .get(middleware.ensureToken, controllers.informationUser)
-} // add middleware
+}

@@ -38,7 +38,16 @@ userSchema.methods.isPasswordMatching = function (password) {
 }
 
 userSchema.methods.generateAccessToken = function () {
-    return jwt.sign({email: this.email}, process.env.KEY_JWT);
+    return jwt.sign({email: this.email}, process.env.KEY_JWT,  { expiresIn: '12h' });
 }
 
 module.exports = mongoose.model('User', userSchema); // User > users
+
+
+
+
+// var token = jwt.sign({email_id:'123@gmail.com'}, "Stack", {
+
+//     expiresIn: '24h' // expires in 24 hours
+
+//      });

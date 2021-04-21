@@ -45,15 +45,5 @@ exports.informationUser = async function (req, res) {
     return res.status(200).send({ id: req.params.id });
 }
 
-// exports.getUserApplet = function (req, res) {
-//     AppletModel.find({userID: req.params.id}).exec((err_applets, applets) => {
-//         if (err_applets)
-//             return res.status(500).json(err_applets);
-//         return res.status(200).json(applets);
-//     });
-// }
-
-// middleware
-// token expire
 // email confirmation
 // password recovery
