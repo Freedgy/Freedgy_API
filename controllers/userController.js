@@ -20,7 +20,11 @@ exports.registerUser = async function (req, res) {
     } catch (error) {
         return res.status(500).send({ message: "Internal Server Error" })
     }
-    return res.status(200).send({ message: "Successfully registered", accessToken: user.generateAccessToken() })
+
+    return res.status(200).send({ 
+        message: "Successfully registered", 
+        accessToken: user.generateAccessToken() 
+    })
 }
 
 exports.loginUser = async function (req, res) {
@@ -29,11 +33,26 @@ exports.loginUser = async function (req, res) {
         return res.status(400).send({ message: "Wrong email" })
     if (!user.isPasswordMatching(req.body.password))
         return res.status(400).send({ message: "Wrong password" })
-    return res.status(200).send({ message: "Successfully logged", accessToken: user.generateAccessToken() })
+
+    return res.status(200).send({ 
+        message: "Successfully logged",
+        id: user._id,
+        accessToken: user.generateAccessToken() 
+    })
 }
 
+exports.informationUser = async function (req, res) {
+    return res.status(200).send({ id: req.params.id });
+}
 
-// encrypter pwd: https://www.npmjs.com/package/crypto-js
+// exports.getUserApplet = function (req, res) {
+//     AppletModel.find({userID: req.params.id}).exec((err_applets, applets) => {
+//         if (err_applets)
+//             return res.status(500).json(err_applets);
+//         return res.status(200).json(applets);
+//     });
+// }
+
 // middleware
 // token expire
 // email confirmation
