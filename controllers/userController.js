@@ -34,3 +34,7 @@ exports.loginUser = async function (req, res) {
 
 
 // encrypter pwd: https://www.npmjs.com/package/crypto-js
+// middleware
+// token expire
+// email confirmation
+// password recovery
