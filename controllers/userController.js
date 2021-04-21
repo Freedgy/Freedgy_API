@@ -6,15 +6,25 @@ const User = require('../models/userModel')
 // verifier si minimum lettre prénom nom
 
 exports.registerUser = async function (req, res) {
-    let user = await User.findOne({ email: req.body.email })
-    if (user)
-        return res.status(400).send({ message: "Email already used" })
+    // req.assert('name', 'Name cannot be blank').notEmpty();
+    // req.assert('email', 'Email is not valid').isEmail();
+    // req.assert('email', 'Email cannot be blank').notEmpty();
+    // req.assert('password', 'Password must be at least 4 characters long').len(4);
+    // req.sanitize('email').normalizeEmail({ remove_dots: false });
+   
+    // // Check for validation errors    
+    // var errors = req.validationErrors();
+    // if (errors) { return res.status(400).send(errors); }
+
+    // let user = await User.findOne({ email: req.body.email })
+    // if (user)
+    //     return res.status(400).send({ message: "Email already used" }) -> normally managed bu mongoose with unique
     user = new User({
         name: req.body.name,
         last_name: req.body.last_name,
         email: req.body.email
     })
-    user.Encrypt(req.body.password)
+    user.Encrypt(req.body.password) // default
     try {
         await user.save()
     } catch (error) {
@@ -42,8 +52,11 @@ exports.loginUser = async function (req, res) {
 }
 
 exports.informationUser = async function (req, res) {
-    return res.status(200).send({ id: req.params.id });
+    const user = await User.findById(req.params.id)
+    if (!user)
+        return res.status(400).send({ message: "User not found" })
+    return res.status(200).send( user );
 }
 
-// email confirmation
+// email confirmation https://codemoto.io/coding/nodejs/email-verification-node-express-mongodb
 // password recovery

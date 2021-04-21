@@ -12,6 +12,9 @@ const user = require('./routes/userRoute')
 mongoose.connect(process.env.URL_DB, { useNewUrlParser: true, useUnifiedTopology: true }, () => {
     console.log("Connected to MongoDB")
 })
+mongoose.set('useNewUrlParser', true);
+mongoose.set('useFindAndModify', false);
+mongoose.set('useCreateIndex', true);
 
 app.use(cors())
 app.use(bodyParser.urlencoded({ extended: true }))

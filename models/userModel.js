@@ -15,6 +15,7 @@ const userSchema = new mongoose.Schema({
     },
     email: {
         type: String,
+        unique: true,
         max: 255,
         required: true
     },
@@ -24,6 +25,10 @@ const userSchema = new mongoose.Schema({
         max: 255,
         required: true
     },
+    isVerified: {
+        type: Boolean,
+        default: false
+    }
 },{
     timestamps: true
 });
@@ -42,12 +47,3 @@ userSchema.methods.generateAccessToken = function () {
 }
 
 module.exports = mongoose.model('User', userSchema); // User > users
-
-
-
-
-// var token = jwt.sign({email_id:'123@gmail.com'}, "Stack", {
-
-//     expiresIn: '24h' // expires in 24 hours
-
-//      });
