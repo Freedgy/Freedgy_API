@@ -1,36 +1,20 @@
 const User = require('../models/userModel')
 
-// if (!req.body.email || !req.body.name || !req.body.password)
-//     return res.status(400).send({ message: "Missing data" }) // find a way to replace this
-// verifier is email est correct
+// clean et redemarrer la DB pour voir si unique fonctionne
 // verifier si minimum lettre prénom nom
 
 exports.registerUser = async function (req, res) {
-    // req.assert('name', 'Name cannot be blank').notEmpty();
-    // req.assert('email', 'Email is not valid').isEmail();
-    // req.assert('email', 'Email cannot be blank').notEmpty();
-    // req.assert('password', 'Password must be at least 4 characters long').len(4);
-    // req.sanitize('email').normalizeEmail({ remove_dots: false });
-   
-    // // Check for validation errors    
-    // var errors = req.validationErrors();
-    // if (errors) { return res.status(400).send(errors); }
-
-    // let user = await User.findOne({ email: req.body.email })
-    // if (user)
-    //     return res.status(400).send({ message: "Email already used" }) -> normally managed bu mongoose with unique
     user = new User({
         name: req.body.name,
         last_name: req.body.last_name,
         email: req.body.email
     })
-    user.Encrypt(req.body.password) // default
+    user.Encrypt(req.body.password)
     try {
         await user.save()
     } catch (error) {
         return res.status(500).send({ message: "Internal Server Error" })
     }
-
     return res.status(200).send({ 
         message: "Successfully registered", 
         accessToken: user.generateAccessToken() 

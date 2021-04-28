@@ -1,11 +1,13 @@
 const controllers = require('../controllers/userController')
-const middleware = require('../middleware/ensureToken')
+const tokenMiddleware = require('../middleware/tokenMiddleware')
+const userMiddleware = require('../middleware/userMiddleware')
+const validateMiddleware = require('../middleware/validateMiddleware')
 
 module.exports = function (app) {
-    app.route('/user/login')
+    app.route('/user/login',)
         .post(controllers.loginUser)
     app.route('/user/register')
-        .post(controllers.registerUser)
+        .post(userMiddleware.registerValidation, validateMiddleware.validate, controllers.registerUser)
     app.route('/user/:id')
-        .get(middleware.ensureToken, controllers.informationUser)
+        .get(tokenMiddleware.ensureToken, controllers.informationUser)
 }
