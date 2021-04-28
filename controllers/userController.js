@@ -1,4 +1,5 @@
 const User = require('../models/userModel')
+const email = require('../utils/email')
 
 // clean et redemarrer la DB pour voir si unique fonctionne
 // verifier si minimum lettre prénom nom
@@ -15,6 +16,7 @@ exports.registerUser = async function (req, res) {
     } catch (error) {
         return res.status(500).send({ message: "Internal Server Error" })
     }
+    // email.sendConfirmation("arnaud.roncaripro@gmail.com", "wow")
     return res.status(200).send({ 
         message: "Successfully registered", 
         accessToken: user.generateAccessToken() 
