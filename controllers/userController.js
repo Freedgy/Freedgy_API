@@ -1,48 +1,53 @@
 const User = require('../models/userModel')
-const email = require('../utils/email')
-
-// clean et redemarrer la DB pour voir si unique fonctionne
-// verifier si minimum lettre prénom nom
+const Encryption = require('../utils/encryption')
 
 exports.registerUser = async function (req, res) {
-    user = new User({
+    var user = new User({
         name: req.body.name,
         last_name: req.body.last_name,
+        password: Encryption.Encrypt(req.body.password, process.env.KE_PASSWORD),
         email: req.body.email
     })
-    user.Encrypt(req.body.password)
     try {
         await user.save()
+        await user.sendEmailConfirmation()  
     } catch (error) {
-        return res.status(500).send({ message: "Internal Server Error" })
+        return res.status(500).json({ message: "Internal Server Error" })
     }
-    // email.sendConfirmation("arnaud.roncaripro@gmail.com", "wow")
-    return res.status(200).send({ 
-        message: "Successfully registered", 
-        accessToken: user.generateAccessToken() 
+    return res.status(200).json({ 
+        message: "Confirmation email send"
     })
 }
 
 exports.loginUser = async function (req, res) {
     const user = await User.findOne({ email: req.body.email })
     if (!user)
-        return res.status(400).send({ message: "Wrong email" })
+        return res.status(400).json({ message: "Wrong email" })
+    if (user.active === false)
+        return res.status(400).json({ message: "Account not activated" })
     if (!user.isPasswordMatching(req.body.password))
-        return res.status(400).send({ message: "Wrong password" })
-
-    return res.status(200).send({ 
+        return res.status(400).json({ message: "Wrong password" })
+    return res.status(200).json({ 
         message: "Successfully logged",
         id: user._id,
         accessToken: user.generateAccessToken() 
     })
 }
 
+exports.confirmationUser = async function (req, res) {
+    const user = await User.findByIdAndUpdate(req.params.id, {$set: {active: true}}, {new: true});
+    if (!user)
+        return res.status(400).json({ message: "Account not found" })
+    return res.status(200).json({ message: "Account activated" });
+}
+
 exports.informationUser = async function (req, res) {
     const user = await User.findById(req.params.id)
     if (!user)
-        return res.status(400).send({ message: "User not found" })
-    return res.status(200).send( user );
+        return res.status(400).json({ message: "User not found" })
+    return res.status(200).json( user );
 }
 
-// email confirmation https://codemoto.io/coding/nodejs/email-verification-node-express-mongodb
+// auto deletion account if not activated
+// ask confirmation again
 // password recovery

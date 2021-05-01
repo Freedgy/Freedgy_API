@@ -9,19 +9,8 @@ const Transporter = nodemailer.createTransport({
     },
     auth: {
         user: 'area.dev@outlook.com',
-        pass: '123456789Aa' // env var
+        pass: process.env.EMAIL_PASSWORD
     }
 });
-exports.Transporter = Transporter;
 
-exports.sendConfirmation = function(email, link) {
-    var mailOptions = {
-        from: '"Freedgy" <area.dev@outlook.com>',
-        to: email,
-        subject: 'Account confirmation',
-        text: link,
-    };
-    Transporter.sendMail(mailOptions).catch(error => {
-        console.error(new Error(error));
-    })
-}
+exports.Transporter = Transporter;

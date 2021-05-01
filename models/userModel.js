@@ -1,6 +1,8 @@
 const mongoose = require('mongoose')
 const CryptoJS = require("crypto-js")
-const jwt = require('jsonwebtoken');
+const jwt = require('jsonwebtoken')
+const Email = require('../utils/email')
+const Encryption = require('../utils/encryption')
 
 const userSchema = new mongoose.Schema({
     name: {
@@ -25,7 +27,7 @@ const userSchema = new mongoose.Schema({
         max: 255,
         required: true
     },
-    isVerified: {
+    active: {
         type: Boolean,
         default: false
     }
@@ -33,17 +35,34 @@ const userSchema = new mongoose.Schema({
     timestamps: true
 });
 
-userSchema.methods.Encrypt = function (password) {
-    this.password = CryptoJS.AES.encrypt(password, process.env.KEY_ENCRYPTION).toString();
-}
+// userSchema.pre("save", async function (next) {
+    // 43200000
+    // setTimeout(async function(next) {
+    //     console.log("bite")
+    //     const document = await User.Model.findOne(this._id);
+    //     await document.remove() 
+    //     }, 10000);
+    //   next();
+// })
 
 userSchema.methods.isPasswordMatching = function (password) {
-    var bytes  = CryptoJS.AES.decrypt(this.password, process.env.KEY_ENCRYPTION);
+    var bytes  = CryptoJS.AES.decrypt(this.password, process.env.KE_PASSWORD);
     return bytes.toString(CryptoJS.enc.Utf8) === password
 }
 
 userSchema.methods.generateAccessToken = function () {
-    return jwt.sign({email: this.email}, process.env.KEY_JWT,  { expiresIn: '12h' });
+    return jwt.sign({email: this.email}, process.env.K_JWT,  { expiresIn: '12h' });
 }
 
-module.exports = mongoose.model('User', userSchema); // User > users
+userSchema.methods.sendEmailConfirmation = async function () {
+    var mailOptions = {
+        from: '"Freedgy" <area.dev@outlook.com>',
+        to: this.email,
+        subject: 'Account confirmation',
+        // text: process.env.HOST + "/user/confirmation/" + Encryption.Encrypt(this._id.toString(), process.env.KE_TOKEN_VERIFICATION)
+        text: process.env.HOST + "/user/confirmation/" + this._id.toString() // need to be hash
+    };
+    Email.Transporter.sendMail(mailOptions);   
+}
+
+module.exports = mongoose.model('User', userSchema);

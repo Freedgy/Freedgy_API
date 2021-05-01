@@ -5,5 +5,5 @@ module.exports.validate = function(req, res, next) {
     if (errors.isEmpty())
         return next()
     else
-        return res.status(400).send(errors)
+        return res.status(400).json(errors)
 }
