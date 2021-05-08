@@ -60,7 +60,17 @@ userSchema.methods.sendEmailConfirmation = async function () {
         to: this.email,
         subject: 'Account confirmation',
         // text: process.env.HOST + "/user/confirmation/" + Encryption.Encrypt(this._id.toString(), process.env.KE_TOKEN_VERIFICATION)
-        text: process.env.HOST + "/user/confirmation/" + this._id.toString() // need to be hash
+        text: process.env.HOST + "/user/confirmation/" + this._id.toString() // need to be hash // could use uuid ?
+    };
+    Email.Transporter.sendMail(mailOptions);   
+}
+
+userSchema.methods.sendEmailReset = async function (uuid) {
+    var mailOptions = {
+        from: '"Freedgy" <area.dev@outlook.com>',
+        to: this.email,
+        subject: 'Reset password',
+        text: process.env.HOST + "/user/reset/" + uuid // need to be hash // could use uuid ?
     };
     Email.Transporter.sendMail(mailOptions);   
 }

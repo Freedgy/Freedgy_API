@@ -6,3 +6,7 @@ module.exports.registerValidation = [
     check('last_name').notEmpty(),
     check('password').notEmpty()
 ]
+
+module.exports.resetValidation = [
+    check('password').notEmpty()
+]
