@@ -1,1 +1,1 @@
-# Freedgy_API
+# Freedgy-API
