@@ -11,13 +11,16 @@ mongoose.set('useNewUrlParser', true);
 mongoose.set('useFindAndModify', false);
 mongoose.set('useCreateIndex', true);
 
+app.use("/uploads", express.static("uploads"))
 app.use(cors())
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 
 //routes
 const user = require('./routes/userRoute')
+const fridge = require('./routes/fridgeRoute')
 
 user(app)
+fridge(app)
 
 app.listen(port, () => {console.log('Listening on port: ' + port)})

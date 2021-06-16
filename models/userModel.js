@@ -27,6 +27,27 @@ const userSchema = new mongoose.Schema({
         max: 255,
         required: true
     },
+    profilepic: {
+        type: String,
+        max: 255,
+        default: "uploads\\baseprofilepic.jpeg"
+    },
+    phone: {
+        type: String,
+        max: 255
+    },
+    address: {
+        type: String,
+        max: 255
+    },
+    city: {
+        type: String,
+        max: 255
+    },
+    zip: {
+        type: String,
+        max: 255
+    },
     active: {
         type: Boolean,
         default: false
