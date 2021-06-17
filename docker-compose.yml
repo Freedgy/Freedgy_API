@@ -1,0 +1,23 @@
+
+version: '3'
+
+services:
+    server:
+        container_name: server
+        build:
+            context: .
+            dockerfile: Dockerfile
+        image: template/server
+        environment:
+            - URL_DB=${URL_DB}
+            - K_JWT=${K_JWT}
+            - K_SENDGRID=${K_SENDGRID}
+            - KE_PASSWORD=${KE_PASSWORD}
+            - KE_TOKEN_VERIFICATION=${KE_TOKEN_VERIFICATION}
+            - EMAIL_PASSWORD=${EMAIL_PASSWORD}
+            - HOST=${HOST}
+        volumes:
+            - .:/usr/src/app
+            - /usr/src/app/node_modules
+        ports:
+            - '${APP_PORT}:${APP_PORT}'
